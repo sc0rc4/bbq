@@ -1,0 +1,17 @@
+#include <iostream>
+
+using namespace std;
+int main() {
+    int user_input, ans;
+    cout << "enter max number : ";
+    cin >> user_input;
+    
+    for (int i = user_input ; i >= 1 ; i--){
+       ans += user_input;
+       user_input -= 1;
+    }
+    
+    cout << " sum of elements is " << ans;
+
+    return 0;
+}
