@@ -1,0 +1,52 @@
+#include <iostream>
+#include <cmath>
+
+class Circle {
+private:
+    double x, y;
+    double radius;
+
+public:
+    Circle(double centerX, double centerY, double r) : x(centerX), y(centerY), radius(r) {}
+
+    double area() const {
+        return M_PI * radius * radius;
+    }
+
+    double circumference() const {
+        return 2 * M_PI * radius;
+    }
+
+    void scale(double factor) {
+        if (factor > 0)
+            radius *= factor;
+    }
+
+    void move(double newX, double newY) {
+        x = newX;
+        y = newY;
+    }
+
+    void display() const {
+        std::cout << "Circle: \n"
+                  << "Center: (" << x << ", " << y << ")\n"
+                  << "Radius: " << radius << "\n"
+                  << "Area: " << area() << "\n"
+                  << "Circumference: " << circumference() << "\n";
+    }
+};
+
+int main() {
+    Circle c1(0, 0, 5);
+    c1.display();
+
+    c1.move(2, 3);
+    std::cout << "\nAfter moving:\n";
+    c1.display();
+
+    c1.scale(2);
+    std::cout << "\nAfter scaling:\n";
+    c1.display();
+
+    return 0;
+}
