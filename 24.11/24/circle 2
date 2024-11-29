@@ -1,0 +1,83 @@
+#include <iostream>
+#include <cmath>
+#include <vector>
+
+class Circle {
+private:
+    double x, y;   // Center coordinates
+    double radius; // Radius
+
+public:
+    Circle(double centerX, double centerY, double r) : x(centerX), y(centerY), radius(r) {}
+
+    double area() const {
+        return M_PI * radius * radius;
+    }
+
+    double distanceTo(const Circle& other) const {
+        return std::sqrt(std::pow(x - other.x, 2) + std::pow(y - other.y, 2));
+    }
+
+    bool touches(const Circle& other) const {
+        double distance = distanceTo(other);
+        return std::fabs(distance - (radius + other.radius)) < 1e-6; // Account for floating-point precision
+    }
+
+    void display() const {
+        std::cout << "Circle: \n"
+                  << "Center: (" << x << ", " << y << ")\n"
+                  << "Radius: " << radius << "\n"
+                  << "Area: " << area() << "\n";
+    }
+};
+
+int main() {
+    int n;
+    double threshold;
+
+    std::cout << "Enter the number of circles: ";
+    std::cin >> n;
+
+    std::vector<Circle> circles;
+    for (int i = 0; i < n; ++i) {
+        double x, y, r;
+        std::cout << "Enter the center (x, y) and radius of circle " << i + 1 << ": ";
+        std::cin >> x >> y >> r;
+        circles.emplace_back(x, y, r);
+    }
+
+    std::cout << "Enter the area threshold: ";
+    std::cin >> threshold;
+
+    std::cout << "\nCircles with an area greater than " << threshold << ":\n";
+    for (const auto& circle : circles) {
+        if (circle.area() > threshold) {
+            circle.display();
+            std::cout << "\n";
+        }
+    }
+
+    int maxTouches = 0, maxTouchesIndex = -1;
+    for (int i = 0; i < n; ++i) {
+        int touches = 0;
+        for (int j = 0; j < n; ++j) {
+            if (i != j && circles[i].touches(circles[j])) {
+                ++touches;
+            }
+        }
+        if (touches > maxTouches) {
+            maxTouches = touches;
+            maxTouchesIndex = i;
+        }
+    }
+
+    if (maxTouchesIndex != -1) {
+        std::cout << "\nCircle that touches the maximum number of other circles:\n";
+        circles[maxTouchesIndex].display();
+        std::cout << "Touches: " << maxTouches << " circles\n";
+    } else {
+        std::cout << "\nNo circles touch each other.\n";
+    }
+
+    return 0;
+}
